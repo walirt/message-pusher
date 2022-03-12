@@ -18,7 +18,7 @@ const { initializeTokenStore, registerWebSocket } = require('./common/token');
 
 // key and crt
 const privateKey  = fs.readFileSync('ssl/server.key', 'utf8');
-const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+const certificate = fs.readFileSync('ssl/server.crt', 'utf8');
 const credentials = {key: privateKey, cert: certificate};
 
 const app = express();
