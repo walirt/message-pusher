@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const http = require('http');
+const https = require('https');
 const serveStatic = require('serve-static');
 const config = require('./config');
 const indexRouter = require('./routers/index');
@@ -14,6 +14,11 @@ const messageRouter = require('./routers/message');
 const userRouter = require('./routers/user');
 const { refreshToken } = require('./common/wechat');
 const { initializeTokenStore, registerWebSocket } = require('./common/token');
+
+// key and crt
+const privateKey  = fs.readFileSync('ssl/server.key', 'utf8');
+const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+const credentials = {key: privateKey, cert: certificate};
 
 const app = express();
 const WebSocket = require('ws');
@@ -78,7 +83,7 @@ app.use('/message', messageRouter);
 app.use('/', indexRouter);
 app.use('/', userRouter);
 
-const server = http.createServer(app);
+const server = https.createServer(credentials, app);
 const wss = new WebSocket.Server({ server });
 server.listen(config.port);
 
