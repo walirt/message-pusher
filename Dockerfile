@@ -25,6 +25,8 @@
 
 FROM --platform=amd64 node:16-alpine
 
+ENV DOCKER_MODE=1
+
 WORKDIR /app
 
 COPY package*.json .
