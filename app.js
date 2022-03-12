@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const http = require('http');
 const https = require('https');
 const serveStatic = require('serve-static');
 const config = require('./config');
@@ -84,7 +85,12 @@ app.use('/message', messageRouter);
 app.use('/', indexRouter);
 app.use('/', userRouter);
 
-const server = https.createServer(credentials, app);
+let server;
+if (process.env.DOCKER_MODE == "1") {
+  server = https.createServer(credentials, app);
+} else {
+  server = http.createServer(app);
+}
 const wss = new WebSocket.Server({ server });
 server.listen(config.port);
 
