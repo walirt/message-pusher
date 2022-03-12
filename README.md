@@ -33,6 +33,14 @@
     3. 重启 Nginx 服务：`sudo service nginx restart`。
 8. 默认用户名密码为：`admin` 和 `123456`，且默认禁止新用户注册，如需修改，请编辑 `config.js`。
 
+### Docker部署(无nginx)
+```sh
+docker build -t message-pusher:v0.2.2 -f Dockerfile .
+// Need copy crt and key to /your/path/ssl 
+// If you want to backup the database you can also mount it, name is data.db
+docker run --name message-pusher -d -p 3000:3000 -v /your/path/ssl:/app/ssl message-pusher:v0.2.2
+```
+
 ### 微信测试号配置
 1. 首先前往[此页面](https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index)拿到 APP_ID 以及 APP_SECRET。
 2. 使用微信扫描下方的测试号二维码，拿到你的 OPEN_ID。
